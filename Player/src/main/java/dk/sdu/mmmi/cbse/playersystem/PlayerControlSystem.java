@@ -1,6 +1,6 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
-import dk.sdu.mmmi.cbse.common.bullet.RunTimeInstantiatorService;
+import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
@@ -30,8 +30,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
 
             if (gameData.getKeys().isDown(GameKeys.SPACE)) {
-                for (RunTimeInstantiatorService bullet : getBulletSPIs()) {
-                    world.addEntity(bullet.spawn(player.getPart(PositionPart.class), gameData));
+                for (BulletSPI bullet : getBulletSPIs()) {
+                    world.addEntity(bullet.createBullet(player.getPart(PositionPart.class), gameData));
                 }
             }
 
@@ -64,7 +64,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
         entity.setShapeY(shapey);
     }
 
-    private Collection<? extends RunTimeInstantiatorService> getBulletSPIs() {
-        return ServiceLoader.load(RunTimeInstantiatorService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    private Collection<? extends BulletSPI> getBulletSPIs() {
+        return ServiceLoader.load(BulletSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
