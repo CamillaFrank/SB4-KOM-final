@@ -2,17 +2,26 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class LifePartTest {
+    GameData gameData;
+    Entity entity;
+
+    @BeforeEach
+    void setup(){
+        this.gameData = mock(GameData.class);
+        this.entity = mock(Entity.class);
+    }
 
     @Test
     void processNotHitNotDead() {
         LifePart lifePart = new LifePart(10);
 
-        lifePart.process(mock(GameData.class), mock(Entity.class));
+        lifePart.process(gameData, entity);
 
         assertEquals(10, lifePart.getLife());
 
@@ -27,7 +36,7 @@ class LifePartTest {
 
         assertTrue(lifePart.isHit());
 
-        lifePart.process(mock(GameData.class), mock(Entity.class));
+        lifePart.process(gameData, entity);
 
         assertEquals(9, lifePart.getLife());
 
@@ -42,7 +51,7 @@ class LifePartTest {
 
         assertTrue(lifePart.isHit());
 
-        lifePart.process(mock(GameData.class), mock(Entity.class));
+        lifePart.process(gameData, entity);
 
         assertEquals(0, lifePart.getLife());
 
